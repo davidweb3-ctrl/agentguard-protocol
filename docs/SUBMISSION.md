@@ -179,6 +179,10 @@ Use [docs/DEMO_RUNBOOK.md](DEMO_RUNBOOK.md) to reproduce the local demo from a c
 - Multisig or team-owned policy administration.
 - Analytics for agent spend, merchant activity, and denied payments.
 
+## Business Model
+
+See [docs/BUSINESS_MODEL.md](BUSINESS_MODEL.md) for target customers, packaging, revenue model, go-to-market, risks, and 30/60/90 day roadmap.
+
 ## Suggested Submission Description
 
 AgentGuard Protocol is a Solana-native spending firewall for autonomous agents. Instead of giving an agent unrestricted wallet access, an owner funds a policy vault and defines on-chain spending rules: allowed merchants, per-transaction limits, daily limits, merchant caps, and pause status.
