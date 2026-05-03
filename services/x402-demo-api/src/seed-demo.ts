@@ -148,10 +148,12 @@ async function main() {
   const env = [
     `ANCHOR_PROVIDER_URL=${rpcUrl}`,
     `ANCHOR_WALLET=${resolvePath(ownerPath)}`,
+    "DEMO_WEB_URL=http://127.0.0.1:3000",
     "DEMO_API_PORT=8787",
     "DEMO_API_URL=http://127.0.0.1:8787/paid/weather-alpha",
     "DEMO_PAYMENT_AMOUNT=10000",
     "DEMO_TOKEN_LABEL=test-usdc",
+    `DEMO_OWNER=${owner.publicKey.toBase58()}`,
     `DEMO_MINT=${mint.toBase58()}`,
     `DEMO_MERCHANT=${merchant.publicKey.toBase58()}`,
     `DEMO_MERCHANT_TOKEN_ACCOUNT=${merchantTokenAccount.toBase58()}`,

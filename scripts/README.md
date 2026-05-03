@@ -32,3 +32,7 @@ curl -X POST "http://127.0.0.1:3000/api/actions/pause" \
   -H "Content-Type: application/json" \
   -d '{"account":"replace-with-owner-wallet"}'
 ```
+
+Full rehearsal:
+
+- Follow `docs/DEMO_RUNBOOK.md` before recording or presenting the hackathon demo.
