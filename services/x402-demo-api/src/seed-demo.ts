@@ -28,6 +28,7 @@ import {
 const DEFAULT_IDL_PATH = "target/idl/agentguard_protocol.json";
 const DEFAULT_KEYS_DIR = ".keys";
 const DEFAULT_ENV_OUTPUT_PATH = ".env.demo";
+const DEFAULT_OWNER_PATH = "~/.config/solana/id.json";
 const DEFAULT_DEPOSIT_AMOUNT = "100000";
 const DEFAULT_OWNER_MINT_AMOUNT = 1_000_000;
 const DEFAULT_PER_TX_LIMIT = "10000";
@@ -36,7 +37,7 @@ const DEFAULT_MERCHANT_CAP = "10000";
 
 async function main() {
   const rpcUrl = process.env.ANCHOR_PROVIDER_URL ?? "http://127.0.0.1:8899";
-  const ownerPath = requiredEnv("ANCHOR_WALLET");
+  const ownerPath = process.env.ANCHOR_WALLET ?? DEFAULT_OWNER_PATH;
   const idlPath = resolvePath(
     process.env.AGENTGUARD_IDL_PATH ?? DEFAULT_IDL_PATH
   );
