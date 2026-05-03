@@ -40,7 +40,9 @@ Keep this terminal running.
 If `anchor localnet` fails on your machine, use:
 
 ```bash
-solana-test-validator --reset
+solana-test-validator --reset \
+  --bpf-program 3AfwmYdCAd9LeRdbiKAJuWBcGVQFtCEStbanoU5TW838 \
+  target/deploy/agentguard_protocol.so
 ```
 
 ## Terminal 2: Seed Demo State

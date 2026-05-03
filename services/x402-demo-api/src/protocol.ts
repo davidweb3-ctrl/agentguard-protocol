@@ -33,6 +33,16 @@ export interface PaymentProof {
   txSignature: string;
 }
 
+export interface PaymentReceiptAccount {
+  agentProfile: string;
+  agentAuthority: string;
+  merchant: string;
+  amount: bigint;
+  requestHash: string;
+  timestamp: bigint;
+  windowStart: bigint;
+}
+
 export interface DemoConfig {
   amount: string;
   token: string;
@@ -62,7 +72,7 @@ export function loadDemoConfig(env = process.env): DemoConfig {
     programId:
       env.DEMO_AGENTGUARD_PROGRAM_ID ?? AGENTGUARD_PROGRAM_ID.toBase58(),
     rpcUrl: env.ANCHOR_PROVIDER_URL,
-    verifyOnchainReceipt: env.DEMO_VERIFY_ONCHAIN_RECEIPT === "true",
+    verifyOnchainReceipt: env.DEMO_VERIFY_ONCHAIN_RECEIPT !== "false",
   };
 }
 
@@ -139,7 +149,18 @@ export async function validatePaymentProof(
     const connection = new Connection(options.rpcUrl, "confirmed");
     const receiptAccount = await connection.getAccountInfo(expectedReceipt);
 
-    return Boolean(receiptAccount?.owner.equals(programId));
+    if (!receiptAccount?.owner.equals(programId)) {
+      return false;
+    }
+
+    const receipt = decodePaymentReceiptAccount(receiptAccount.data);
+
+    return (
+      receipt.agentProfile === challenge.agentProfile &&
+      receipt.merchant === challenge.merchant &&
+      receipt.requestHash === challenge.requestHash &&
+      receipt.amount >= BigInt(challenge.amount)
+    );
   } catch (_error) {
     return false;
   }
@@ -167,3 +188,34 @@ export function hexToBytes(value: string) {
 
   return normalizeRequestHash(Uint8Array.from(Buffer.from(value, "hex")));
 }
+
+export function decodePaymentReceiptAccount(
+  data: Buffer
+): PaymentReceiptAccount {
+  if (data.length < PAYMENT_RECEIPT_ACCOUNT_SIZE) {
+    throw new Error("PaymentReceipt account data is too short");
+  }
+
+  if (!data.subarray(0, 8).equals(PAYMENT_RECEIPT_DISCRIMINATOR)) {
+    throw new Error("Invalid PaymentReceipt account discriminator");
+  }
+
+  return {
+    agentProfile: readPublicKey(data, 8),
+    agentAuthority: readPublicKey(data, 40),
+    merchant: readPublicKey(data, 72),
+    amount: data.readBigUInt64LE(104),
+    requestHash: data.subarray(112, 144).toString("hex"),
+    timestamp: data.readBigInt64LE(144),
+    windowStart: data.readBigInt64LE(152),
+  };
+}
+
+function readPublicKey(data: Buffer, offset: number) {
+  return new PublicKey(data.subarray(offset, offset + 32)).toBase58();
+}
+
+const PAYMENT_RECEIPT_ACCOUNT_SIZE = 161;
+const PAYMENT_RECEIPT_DISCRIMINATOR = Buffer.from([
+  168, 198, 209, 4, 60, 235, 126, 109,
+]);
