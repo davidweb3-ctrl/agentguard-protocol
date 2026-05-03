@@ -4,6 +4,7 @@ import { expect } from "chai";
 import {
   buildAgentPayInstruction,
   buildInitializeAgentInstruction,
+  buildSetPauseRawInstruction,
   createTransaction,
   deriveAgentProfile,
   deriveMerchantPolicy,
@@ -107,6 +108,29 @@ describe("@agentguard/sdk", () => {
   it("rejects request hashes that are not 32 bytes", () => {
     expect(() => normalizeRequestHash(new Uint8Array(31))).to.throw(
       "requestHash must be 32 bytes"
+    );
+  });
+
+  it("builds raw pause instructions for Solana Actions", () => {
+    const owner = anchor.web3.Keypair.generate().publicKey;
+    const agentProfile = anchor.web3.Keypair.generate().publicKey;
+
+    const instruction = buildSetPauseRawInstruction({
+      owner,
+      agentProfile,
+      paused: true,
+      programId: program.programId,
+    });
+
+    expect(instruction.programId.equals(program.programId)).to.equal(true);
+    expect(instruction.keys[0].pubkey.equals(owner)).to.equal(true);
+    expect(instruction.keys[0].isSigner).to.equal(true);
+    expect(instruction.keys[0].isWritable).to.equal(false);
+    expect(instruction.keys[1].pubkey.equals(agentProfile)).to.equal(true);
+    expect(instruction.keys[1].isSigner).to.equal(false);
+    expect(instruction.keys[1].isWritable).to.equal(true);
+    expect(Buffer.from(instruction.data).toString("hex")).to.equal(
+      "3f209a0238674f2d01"
     );
   });
 });

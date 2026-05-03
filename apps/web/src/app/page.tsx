@@ -13,7 +13,7 @@ const demoFlow = [
   "Program checks policy before transfer",
   "Receipt PDA is created",
   "Agent retries with proof",
-  "Over-limit request is rejected",
+  "Owner can pause via Action",
 ];
 
 const proofFields = [
@@ -63,7 +63,9 @@ export default function Home() {
             <Metric label="Vault token" value="test USDC" />
           </div>
           <div style={styles.controlRow}>
-            <button style={styles.primaryButton}>Pause agent</button>
+            <a href="/api/actions/pause" style={styles.primaryButton}>
+              Pause action
+            </a>
             <button style={styles.secondaryButton}>Update limits</button>
             <button style={styles.secondaryButton}>Add merchant</button>
           </div>
@@ -79,6 +81,10 @@ export default function Home() {
           <div style={styles.identityBlock}>
             <span style={styles.identityLabel}>Token account</span>
             <code style={styles.codeValue}>Seeded local SPL account</code>
+          </div>
+          <div style={styles.identityBlock}>
+            <span style={styles.identityLabel}>Blink action</span>
+            <code style={styles.codeValue}>/api/actions/pause</code>
           </div>
         </article>
       </section>
@@ -290,6 +296,9 @@ const styles = {
     marginTop: 22,
   },
   primaryButton: {
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
     border: 0,
     borderRadius: 8,
     background: "#1f6feb",
@@ -297,6 +306,7 @@ const styles = {
     padding: "12px 16px",
     fontSize: 14,
     fontWeight: 700,
+    textDecoration: "none",
   },
   secondaryButton: {
     border: "1px solid #cfd6e4",

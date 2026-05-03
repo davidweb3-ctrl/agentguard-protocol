@@ -61,6 +61,13 @@ export interface SetPauseInstructionParams {
   paused: boolean;
 }
 
+export interface SetPauseRawInstructionParams {
+  owner: PublicKey;
+  agentProfile: PublicKey;
+  paused: boolean;
+  programId?: PublicKey;
+}
+
 export interface AgentPayInstructionParams {
   program: AgentGuardProgram;
   agentAuthority: PublicKey;
@@ -276,6 +283,22 @@ export async function buildSetPauseInstruction({
     .instruction();
 }
 
+export function buildSetPauseRawInstruction({
+  owner,
+  agentProfile,
+  paused,
+  programId = AGENTGUARD_PROGRAM_ID,
+}: SetPauseRawInstructionParams) {
+  return new TransactionInstruction({
+    programId,
+    keys: [
+      { pubkey: owner, isSigner: true, isWritable: false },
+      { pubkey: agentProfile, isSigner: false, isWritable: true },
+    ],
+    data: Buffer.from([...SET_PAUSE_DISCRIMINATOR, paused ? 1 : 0]),
+  });
+}
+
 export async function buildAgentPayInstruction({
   program,
   agentAuthority,
@@ -328,3 +351,5 @@ function toBn(amount: AmountLike) {
 
   return new BN(amount.toString());
 }
+
+const SET_PAUSE_DISCRIMINATOR = [63, 32, 154, 2, 56, 103, 79, 45];

@@ -157,6 +157,9 @@ async function main() {
     `DEMO_MERCHANT_TOKEN_ACCOUNT=${merchantTokenAccount.toBase58()}`,
     `DEMO_AGENT_PROFILE=${agentProfile.toBase58()}`,
     `DEMO_AGENTGUARD_PROGRAM_ID=${program.programId.toBase58()}`,
+    `NEXT_PUBLIC_DEMO_AGENT_PROFILE=${agentProfile.toBase58()}`,
+    `NEXT_PUBLIC_SOLANA_RPC_URL=${rpcUrl}`,
+    `NEXT_PUBLIC_AGENTGUARD_PROGRAM_ID=${program.programId.toBase58()}`,
     "DEMO_VERIFY_ONCHAIN_RECEIPT=false",
     `AGENT_AUTHORITY_KEYPAIR=${resolvePath(
       path.join(keysDir, "agent-authority.json")
