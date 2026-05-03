@@ -4,11 +4,13 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "tsx src/server.ts",
-    "typecheck": "tsc -p tsconfig.json --noEmit"
+    "agent": "pnpm --filter @agentguard/sdk build && tsx src/agent-client.ts",
+    "dev": "pnpm --filter @agentguard/sdk build && tsx src/server.ts",
+    "typecheck": "pnpm --filter @agentguard/sdk build && tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
     "@agentguard/sdk": "workspace:*",
+    "@coral-xyz/anchor": "^0.32.1",
     "@solana/web3.js": "^1.98.0",
     "express": "^5.1.0"
   },

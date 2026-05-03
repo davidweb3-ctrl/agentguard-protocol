@@ -1,31 +1,46 @@
 import express from "express";
 
+import {
+  buildPaymentChallenge,
+  loadDemoConfig,
+  parseProofHeader,
+  validatePaymentProof,
+} from "./protocol.js";
+
 const app = express();
 const port = Number(process.env.DEMO_API_PORT ?? 8787);
 
 app.use(express.json());
 
-app.get("/paid/weather-alpha", (req, res) => {
-  const receipt = req.header("x-agentguard-receipt");
+app.get("/paid/weather-alpha", async (req, res) => {
+  const config = loadDemoConfig();
+  const challenge = buildPaymentChallenge(config);
+  const proof = parseProofHeader(req.header("x-agentguard-proof"));
 
-  if (!receipt) {
+  if (!proof) {
+    res.status(402).json(challenge);
+    return;
+  }
+
+  if (
+    !(await validatePaymentProof(proof, challenge, {
+      rpcUrl: config.rpcUrl,
+      verifyOnchainReceipt: config.verifyOnchainReceipt,
+    }))
+  ) {
     res.status(402).json({
-      error: "payment_required",
-      amount: "10000",
-      token: "devnet-usdc",
-      merchant: "replace-with-merchant-wallet",
-      requestHash: "replace-with-32-byte-request-hash",
-      instructions:
-        "Pay with AgentGuard agent_pay, then retry with x-agentguard-receipt.",
+      ...challenge,
+      errorDetail: "Invalid AgentGuard proof.",
     });
     return;
   }
 
   res.json({
     ok: true,
-    receipt,
+    proof,
     data: {
       signal: "paid API response unlocked by AgentGuard receipt",
+      source: "weather-alpha",
     },
   });
 });
