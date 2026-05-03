@@ -152,9 +152,13 @@ Latest test status:
 - x402 challenge to payment to paid data: passed.
 - Pause Action transaction generation: passed.
 
-## Demo Script
+## Video Scripts
 
-Use [docs/DEMO_SCRIPT.md](DEMO_SCRIPT.md) for the primary 3-minute hackathon demo video, with a shorter backup cut if needed.
+Use:
+
+- [docs/PITCH_VIDEO_SCRIPT.md](PITCH_VIDEO_SCRIPT.md) for the 3-minute pitch video.
+- [docs/TECHNICAL_DEMO_SCRIPT.md](TECHNICAL_DEMO_SCRIPT.md) for the 2-3 minute technical demo video.
+- [docs/DEMO_SCRIPT.md](DEMO_SCRIPT.md) as the video script index.
 
 ## Rehearsal Runbook
 
