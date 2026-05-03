@@ -73,7 +73,7 @@ Solana is a strong fit for agentic payments because it provides:
 - Agent client that handles 402 challenge, payment, and retry.
 - Next.js dashboard view.
 - Solana Action-style pause endpoint.
-- Demo runbook and 60-90 second demo script.
+- Demo runbook and 3-minute demo script.
 
 ## Security Notes
 
@@ -154,7 +154,7 @@ Latest test status:
 
 ## Demo Script
 
-Use [docs/DEMO_SCRIPT.md](DEMO_SCRIPT.md) for a 60-90 second live demo or recorded walkthrough.
+Use [docs/DEMO_SCRIPT.md](DEMO_SCRIPT.md) for the primary 3-minute hackathon demo video, with a shorter backup cut if needed.
 
 ## Rehearsal Runbook
 
