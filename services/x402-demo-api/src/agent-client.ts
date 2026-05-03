@@ -1,4 +1,6 @@
 import fs from "node:fs";
+import os from "node:os";
+import path from "node:path";
 
 import * as anchor from "@coral-xyz/anchor";
 import {
@@ -21,8 +23,12 @@ const DEFAULT_IDL_PATH = "target/idl/agentguard_protocol.json";
 async function main() {
   const apiUrl = process.env.DEMO_API_URL ?? DEFAULT_API_URL;
   const rpcUrl = process.env.ANCHOR_PROVIDER_URL ?? "http://127.0.0.1:8899";
-  const agentAuthorityPath = requiredEnv("AGENT_AUTHORITY_KEYPAIR");
-  const idlPath = process.env.AGENTGUARD_IDL_PATH ?? DEFAULT_IDL_PATH;
+  const agentAuthorityPath = resolvePath(
+    requiredEnv("AGENT_AUTHORITY_KEYPAIR")
+  );
+  const idlPath = resolvePath(
+    process.env.AGENTGUARD_IDL_PATH ?? DEFAULT_IDL_PATH
+  );
 
   const agentAuthority = readKeypair(agentAuthorityPath);
   const connection = new Connection(rpcUrl, "confirmed");
@@ -107,6 +113,18 @@ function readKeypair(path: string) {
   const secretKey = JSON.parse(fs.readFileSync(path, "utf8"));
 
   return Keypair.fromSecretKey(Uint8Array.from(secretKey));
+}
+
+function resolvePath(value: string) {
+  if (value.startsWith("~/")) {
+    return path.join(os.homedir(), value.slice(2));
+  }
+
+  if (path.isAbsolute(value)) {
+    return value;
+  }
+
+  return path.resolve(process.env.INIT_CWD ?? process.cwd(), value);
 }
 
 main().catch((error) => {

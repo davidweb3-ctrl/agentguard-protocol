@@ -6,11 +6,13 @@
   "scripts": {
     "agent": "pnpm --filter @agentguard/sdk build && tsx src/agent-client.ts",
     "dev": "pnpm --filter @agentguard/sdk build && tsx src/server.ts",
+    "seed": "pnpm --filter @agentguard/sdk build && tsx src/seed-demo.ts",
     "typecheck": "pnpm --filter @agentguard/sdk build && tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
     "@agentguard/sdk": "workspace:*",
     "@coral-xyz/anchor": "^0.32.1",
+    "@solana/spl-token": "^0.4.14",
     "@solana/web3.js": "^1.98.0",
     "express": "^5.1.0"
   },

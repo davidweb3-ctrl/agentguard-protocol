@@ -1,5 +1,5 @@
-import * as anchor from "@coral-xyz/anchor";
 import type { Program } from "@coral-xyz/anchor";
+import BN from "bn.js";
 import {
   PublicKey,
   SYSVAR_RENT_PUBKEY,
@@ -16,7 +16,7 @@ export const TOKEN_PROGRAM_ID = new PublicKey(
   "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
 );
 
-export type AmountLike = anchor.BN | bigint | number | string;
+export type AmountLike = BN | bigint | number | string;
 export type RequestHash = Uint8Array | number[];
 export type AgentGuardProgram = Program;
 
@@ -322,9 +322,9 @@ export async function buildAgentPayInstruction({
 }
 
 function toBn(amount: AmountLike) {
-  if (anchor.BN.isBN(amount)) {
+  if (BN.isBN(amount)) {
     return amount;
   }
 
-  return new anchor.BN(amount.toString());
+  return new BN(amount.toString());
 }

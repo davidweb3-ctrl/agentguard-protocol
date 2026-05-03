@@ -1,8 +1,11 @@
 .anchor
 .DS_Store
+.env.demo
+.keys
 target
 node_modules
 dist
 build
 test-ledger
+**/.keys
 **/.next

@@ -6,7 +6,9 @@ node_modules
 test-ledger
 .yarn
 .env
+.env.demo
 .env.local
+.keys
 .next
 dist
 build
