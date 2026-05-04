@@ -10,11 +10,7 @@ Show the README title or a simple title slide.
 
 Say:
 
-> We are building AgentGuard Protocol for the Solana Frontier Hackathon. Our focus is Solana-native agent payments: how autonomous agents can safely pay for APIs and services without receiving unrestricted wallet access.
-
-Optional personalization:
-
-> I come from a Web3 builder background and built this MVP across the Anchor program, TypeScript SDK, x402-style API, agent client, dashboard, and Solana Action flow.
+> I am a solo founder and former Alibaba engineer, with a background in distributed systems and production safety. I recently joined the Solana developer ecosystem through community training, and this is my first hackathon project. AgentGuard is built solo plus AI, and it applies my safety engineering experience to a new problem: autonomous agent spending.
 
 ## 0:15-0:40: Problem
 
