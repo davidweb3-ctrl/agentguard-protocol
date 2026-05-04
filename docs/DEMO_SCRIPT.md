@@ -9,6 +9,7 @@ Use these scripts:
 
 - [Pitch Video Script](PITCH_VIDEO_SCRIPT.md): primary 3-minute founder-style submission video.
 - [Technical Demo Script](TECHNICAL_DEMO_SCRIPT.md): 2-3 minute implementation walkthrough.
+- [Recording Checklist](RECORDING_CHECKLIST.md): terminal layout, shot list, and final upload checks.
 
 ## Suggested Submission Order
 
