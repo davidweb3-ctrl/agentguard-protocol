@@ -62,7 +62,7 @@ Show the policy checks or tests summary.
 
 Say:
 
-> The core safety property is that policy checks happen before funds move: agent authority, merchant allowlist, per-transaction limit, daily limit, merchant cap, paused status, mint, and vault constraints. The owner also has a Solana Action-style pause endpoint for human override.
+> The core safety property is that policy checks happen before funds move: agent authority, merchant allowlist, per-transaction limit, daily limit, merchant cap, paused status, mint, and vault constraints. The demo also includes an over-limit rejection command that confirms balances remain unchanged. The owner has a Solana Action-style pause endpoint for human override.
 
 ## 2:20-2:40: Market
 

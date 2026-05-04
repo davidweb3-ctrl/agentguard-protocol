@@ -85,6 +85,19 @@ Expected result:
 - The output includes `proof.receiptPda` and `paidStatus: 200`.
 - The paid response contains `paid API response unlocked by AgentGuard receipt`.
 
+## Terminal 4b: Run Over-Limit Rejection
+
+```bash
+set -a && source .env.demo && set +a
+pnpm --filter @agentguard/x402-demo-api agent:over-limit
+```
+
+Expected result:
+
+- The transaction is rejected by the program.
+- The output includes `expectedRejection: true`.
+- The output includes `balancesUnchanged: true`.
+
 ## Terminal 5: Start Dashboard And Check Pause Action
 
 ```bash

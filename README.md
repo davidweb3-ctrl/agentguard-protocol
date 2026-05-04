@@ -117,6 +117,18 @@ Expected result:
 - The program creates a `PaymentReceipt` PDA.
 - The API verifies the receipt and returns `paidStatus: 200`.
 
+Run an over-limit rejection:
+
+```bash
+set -a && source .env.demo && set +a
+pnpm --filter @agentguard/x402-demo-api agent:over-limit
+```
+
+Expected result:
+
+- The program rejects the over-limit payment.
+- Vault and merchant balances remain unchanged.
+
 Check the pause Action endpoint:
 
 ```bash

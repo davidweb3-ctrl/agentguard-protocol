@@ -80,11 +80,17 @@ Say:
 
 ## 2:00-2:25: Policy Enforcement
 
-Show tests or program checks.
+Run the over-limit demo command:
+
+```bash
+pnpm --filter @agentguard/x402-demo-api agent:over-limit
+```
+
+Then show tests or program checks.
 
 Say:
 
-> The program checks authority, merchant allowlist, per-transaction limit, daily limit, merchant cap, paused status, mint, vault, and merchant token owner before token transfer CPI. The test suite covers success and rejection paths, and rejection tests verify balances remain unchanged.
+> Now we try an over-limit payment. The program rejects it before transfer, and the output confirms that vault and merchant balances are unchanged. The program checks authority, merchant allowlist, per-transaction limit, daily limit, merchant cap, paused status, mint, vault, and merchant token owner before token transfer CPI.
 
 Optional command:
 

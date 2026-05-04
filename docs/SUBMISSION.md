@@ -150,6 +150,7 @@ Latest test status:
 - Anchor and SDK tests: 16 passing.
 - Full local rehearsal: passed.
 - x402 challenge to payment to paid data: passed.
+- Over-limit rejection with unchanged balances: passed.
 - Pause Action transaction generation: passed.
 
 ## Video Scripts

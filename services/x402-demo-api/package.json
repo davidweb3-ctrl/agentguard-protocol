@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "agent": "pnpm --filter @agentguard/sdk build && tsx src/agent-client.ts",
+    "agent:over-limit": "pnpm --filter @agentguard/sdk build && tsx src/agent-over-limit.ts",
     "check:pause-action": "tsx src/check-pause-action.ts",
     "dev": "pnpm --filter @agentguard/sdk build && tsx src/server.ts",
     "seed": "pnpm --filter @agentguard/sdk build && tsx src/seed-demo.ts",
