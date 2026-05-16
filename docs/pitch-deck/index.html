@@ -1,0 +1,572 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AgentGuard Protocol Pitch Deck</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #070b18;
+        --panel: #10182a;
+        --panel-2: #151f36;
+        --text: #f7fbff;
+        --muted: #a9b6c9;
+        --line: #263249;
+        --green: #14f195;
+        --purple: #9945ff;
+        --red: #ff5c68;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        overflow: hidden;
+        background: #000;
+        color: var(--text);
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+      }
+
+      .deck {
+        width: 100vw;
+        height: 100vh;
+        position: relative;
+      }
+
+      .slide {
+        position: absolute;
+        inset: 0;
+        display: none;
+        overflow: hidden;
+        padding: 7vh 8vw;
+        background:
+          radial-gradient(circle at 92% 10%, rgba(20, 241, 149, 0.14) 0 18vw, transparent 18.2vw),
+          radial-gradient(circle at -4% 92%, rgba(153, 69, 255, 0.18) 0 16vw, transparent 16.2vw),
+          var(--bg);
+      }
+
+      .slide.active {
+        display: block;
+      }
+
+      .kicker {
+        color: var(--green);
+        font-size: clamp(15px, 1.3vw, 24px);
+        font-weight: 800;
+        letter-spacing: 0;
+        text-transform: uppercase;
+      }
+
+      .rule {
+        height: 2px;
+        width: 100%;
+        margin-top: 24px;
+        background: var(--line);
+      }
+
+      .number {
+        position: absolute;
+        top: 7vh;
+        right: 10vw;
+        color: var(--muted);
+        font-size: clamp(22px, 2vw, 34px);
+        font-weight: 800;
+      }
+
+      h1 {
+        max-width: 1020px;
+        margin: 10vh 0 0;
+        font-size: clamp(58px, 6.3vw, 116px);
+        line-height: 0.95;
+        letter-spacing: 0;
+      }
+
+      h2 {
+        max-width: 1260px;
+        margin: 7vh 0 0;
+        font-size: clamp(44px, 4.9vw, 88px);
+        line-height: 1.04;
+        letter-spacing: 0;
+      }
+
+      p {
+        max-width: 940px;
+        color: var(--muted);
+        font-size: clamp(22px, 2.1vw, 38px);
+        line-height: 1.24;
+      }
+
+      .tagline {
+        display: inline-flex;
+        margin-top: 4vh;
+        padding: 18px 34px;
+        border-radius: 999px;
+        background: var(--green);
+        color: #061020;
+        font-size: clamp(21px, 1.8vw, 34px);
+        font-weight: 900;
+      }
+
+      .footer {
+        position: absolute;
+        left: 8vw;
+        bottom: 8vh;
+        color: var(--green);
+        font-size: clamp(20px, 1.7vw, 32px);
+        font-weight: 800;
+      }
+
+      .flow {
+        display: flex;
+        align-items: center;
+        gap: 26px;
+        margin-top: 9vh;
+      }
+
+      .flow.compact {
+        margin-top: 10vh;
+        gap: 20px;
+      }
+
+      .product-flow {
+        gap: 18px;
+      }
+
+      .box {
+        min-width: 148px;
+        min-height: 112px;
+        display: flex;
+        align-items: center;
+        padding: 24px;
+        border: 3px solid var(--green);
+        border-radius: 22px;
+        background: var(--panel);
+        font-size: clamp(21px, 1.8vw, 32px);
+        font-weight: 850;
+        line-height: 1.04;
+      }
+
+      .box.purple {
+        border-color: var(--purple);
+      }
+
+      .box.wide {
+        width: 270px;
+      }
+
+      .product-flow .box.wide {
+        width: 250px;
+        min-height: 122px;
+        font-size: clamp(20px, 1.45vw, 28px);
+      }
+
+      .product-flow .arrow {
+        font-size: clamp(38px, 3.4vw, 62px);
+      }
+
+      .arrow {
+        color: #8fa0b6;
+        font-size: clamp(42px, 4vw, 72px);
+        font-weight: 700;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 30px;
+        margin-top: 6vh;
+        max-width: 900px;
+      }
+
+      .proof-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 44px;
+        max-width: 1060px;
+        margin: 8vh auto 0;
+      }
+
+      .proof {
+        min-height: 112px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 3px solid var(--green);
+        border-radius: 26px;
+        background: var(--panel);
+        color: var(--green);
+        font-size: clamp(27px, 2.4vw, 44px);
+        font-weight: 900;
+        white-space: nowrap;
+      }
+
+      .proof.purple {
+        border-color: var(--purple);
+        color: var(--purple);
+      }
+
+      .tile {
+        min-height: 104px;
+        padding: 27px 32px;
+        border: 2px solid var(--line);
+        border-radius: 18px;
+        background: var(--panel);
+        font-size: clamp(20px, 1.7vw, 32px);
+        font-weight: 780;
+        line-height: 1.18;
+      }
+
+      .columns {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 7vw;
+        margin-top: 6vh;
+      }
+
+      .business-slide h2 {
+        max-width: 1320px;
+        margin-top: 6vh;
+        font-size: clamp(42px, 4.2vw, 76px);
+      }
+
+      .business-slide .columns {
+        margin-top: 4vh;
+      }
+
+      .columns h3 {
+        margin: 0 0 28px;
+        color: var(--green);
+        font-size: clamp(28px, 2.4vw, 46px);
+      }
+
+      .stack {
+        display: grid;
+        gap: 22px;
+      }
+
+      .business-slide .stack {
+        gap: 16px;
+      }
+
+      .chip {
+        padding: 20px 26px;
+        border: 2px solid var(--line);
+        border-radius: 16px;
+        background: var(--panel);
+        color: var(--text);
+        font-size: clamp(22px, 1.8vw, 34px);
+        font-weight: 760;
+      }
+
+      .business-slide .chip {
+        padding: 15px 22px;
+        font-size: clamp(20px, 1.55vw, 30px);
+      }
+
+      .business-slide .footer {
+        bottom: 4vh;
+      }
+
+      .title-slide .flow {
+        margin-top: 7vh;
+      }
+
+      .title-slide .footer,
+      .problem-slide .footer,
+      .product-slide .footer,
+      .business-slide .footer {
+        display: none;
+      }
+
+      .product-slide h2 {
+        max-width: 980px;
+        margin-top: 5.5vh;
+        font-size: clamp(44px, 4.2vw, 76px);
+      }
+
+      .product-slide .flow.compact {
+        margin-top: 5.5vh;
+      }
+
+      .product-slide .grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 18px;
+        max-width: none;
+        margin-top: 5vh;
+      }
+
+      .product-slide .tile {
+        min-height: 96px;
+        padding: 20px 22px;
+        font-size: clamp(18px, 1.25vw, 25px);
+      }
+
+      .center {
+        text-align: center;
+      }
+
+      .center h2,
+      .center p {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .mvp-copy {
+        max-width: 1320px;
+        margin: 6vh auto 0;
+        color: var(--text);
+        font-size: clamp(26px, 2.3vw, 40px);
+        font-weight: 800;
+        text-align: center;
+      }
+
+      .mvp-subcopy {
+        max-width: 1100px;
+        margin: 22px auto 0;
+        color: var(--muted);
+        font-size: clamp(20px, 1.6vw, 28px);
+        text-align: center;
+      }
+
+      .controls {
+        position: fixed;
+        right: 28px;
+        bottom: 22px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 10px 14px;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        border-radius: 999px;
+        background: rgba(0, 0, 0, 0.42);
+        color: rgba(255, 255, 255, 0.72);
+        font-size: 14px;
+        backdrop-filter: blur(12px);
+      }
+
+      .controls button {
+        width: 38px;
+        height: 32px;
+        border: 0;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.12);
+        color: white;
+        font-size: 18px;
+        cursor: pointer;
+      }
+
+      body.capture .controls {
+        display: none;
+      }
+
+      @media (max-width: 900px) {
+        .slide {
+          padding: 5vh 7vw;
+        }
+
+        .flow,
+        .flow.compact {
+          flex-wrap: wrap;
+          margin-top: 6vh;
+        }
+
+        .arrow {
+          display: none;
+        }
+
+        .grid,
+        .columns,
+        .proof-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .proof {
+          white-space: normal;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="deck" aria-label="AgentGuard Protocol pitch deck">
+      <section class="slide active title-slide">
+        <div class="kicker">Solana Frontier Hackathon</div>
+        <div class="number">01</div>
+        <div class="rule"></div>
+        <h1>AgentGuard Protocol</h1>
+        <p>Programmable spending limits for autonomous agents on Solana.</p>
+        <div class="tagline">Give agents budgets, not private keys.</div>
+        <div class="flow">
+          <div class="box">Owner</div>
+          <div class="arrow">→</div>
+          <div class="box purple">Policy Vault</div>
+          <div class="arrow">→</div>
+          <div class="box">Agent Payment</div>
+          <div class="arrow">→</div>
+          <div class="box purple">Receipt</div>
+        </div>
+        <div class="footer">Solana-native agent spending firewall</div>
+      </section>
+
+      <section class="slide problem-slide">
+        <div class="kicker">Problem</div>
+        <div class="number">02</div>
+        <div class="rule"></div>
+        <h2>Agents can act, but cannot safely spend</h2>
+        <div class="grid">
+          <div class="tile">Agents need to pay for APIs, data, compute, infrastructure, and on-chain services.</div>
+          <div class="tile">Private keys give agents too much spending power.</div>
+          <div class="tile">A buggy or compromised agent can overspend or drain funds.</div>
+          <div class="tile">Owners need limits, receipts, and emergency pause.</div>
+        </div>
+        <div class="footer">The missing layer is programmable payment safety.</div>
+      </section>
+
+      <section class="slide">
+        <div class="kicker">Timing</div>
+        <div class="number">03</div>
+        <div class="rule"></div>
+        <h2>Why now: agent payments need guardrails</h2>
+        <div class="flow">
+          <div class="box wide">Agent frameworks</div>
+          <div class="arrow">→</div>
+          <div class="box wide purple">x402-style APIs</div>
+          <div class="arrow">→</div>
+          <div class="box wide">Solana Actions</div>
+          <div class="arrow">→</div>
+          <div class="box wide purple">Payment receipts</div>
+        </div>
+        <p>Solana is fast and cheap enough for per-request payments, while PDAs make policy vaults and payment receipts composable.</p>
+      </section>
+
+      <section class="slide product-slide">
+        <div class="kicker">Product</div>
+        <div class="number">04</div>
+        <div class="rule"></div>
+        <h2>AgentGuard is a spending firewall</h2>
+        <div class="flow compact product-flow">
+          <div class="box wide">Owner</div>
+          <div class="arrow">→</div>
+          <div class="box wide purple">Policy Vault</div>
+          <div class="arrow">→</div>
+          <div class="box wide">Guard Program</div>
+          <div class="arrow">→</div>
+          <div class="box wide purple">Merchant</div>
+          <div class="arrow">→</div>
+          <div class="box wide">Receipt PDA</div>
+        </div>
+        <div class="grid">
+          <div class="tile">Per-transaction and daily limits</div>
+          <div class="tile">Merchant allowlist and merchant cap</div>
+          <div class="tile">Receipt PDA after successful payment</div>
+          <div class="tile">Owner pause for human override</div>
+        </div>
+        <div class="footer">Policy checks happen before SPL token transfer.</div>
+      </section>
+
+      <section class="slide center">
+        <div class="kicker">MVP Proof</div>
+        <div class="number">05</div>
+        <div class="rule"></div>
+        <h2>MVP: x402-style payments enforced by Solana policy</h2>
+        <div class="flow compact">
+          <div class="box wide">402 Challenge</div>
+          <div class="arrow">→</div>
+          <div class="box wide purple">agent_pay</div>
+          <div class="arrow">→</div>
+          <div class="box wide">Policy Checks</div>
+          <div class="arrow">→</div>
+          <div class="box wide purple">Receipt PDA</div>
+          <div class="arrow">→</div>
+          <div class="box wide">Paid Data</div>
+        </div>
+        <div class="proof-grid">
+          <div class="proof">paidStatus: 200</div>
+          <div class="proof purple">balancesUnchanged: true</div>
+        </div>
+        <div class="mvp-copy">The MVP proves the full loop: 402 challenge, guarded on-chain payment, receipt retry, and over-limit rejection before transfer.</div>
+        <div class="mvp-subcopy">The API unlocks only after a decoded PaymentReceipt matches the challenge.</div>
+      </section>
+
+      <section class="slide business-slide">
+        <div class="kicker">Business + Roadmap</div>
+        <div class="number">06</div>
+        <div class="rule"></div>
+        <h2>From open protocol to policy platform</h2>
+        <div class="columns">
+          <div>
+            <h3>Users</h3>
+            <div class="stack">
+              <div class="chip">Solana agent builders</div>
+              <div class="chip">Paid API providers</div>
+              <div class="chip">DAO automation teams</div>
+              <div class="chip">Trading and ops bots</div>
+              <div class="chip">Agent wallet and framework providers</div>
+            </div>
+          </div>
+          <div>
+            <h3>Business</h3>
+            <div class="stack">
+              <div class="chip">Hosted dashboard</div>
+              <div class="chip">Per-agent pricing</div>
+              <div class="chip">Payment volume fee</div>
+              <div class="chip">Premium monitoring</div>
+              <div class="chip">Enterprise policy hosting</div>
+            </div>
+          </div>
+        </div>
+        <div class="footer">Give agents budgets, not private keys.</div>
+      </section>
+    </main>
+
+    <nav class="controls" aria-label="Slide controls">
+      <button type="button" id="prev" aria-label="Previous slide">‹</button>
+      <span id="counter">1 / 6</span>
+      <button type="button" id="next" aria-label="Next slide">›</button>
+    </nav>
+
+    <script>
+      const slides = Array.from(document.querySelectorAll(".slide"));
+      const counter = document.querySelector("#counter");
+      const params = new URLSearchParams(window.location.search);
+      const captureMode = params.get("capture") === "1";
+      let current = 0;
+
+      if (captureMode) {
+        document.body.classList.add("capture");
+      }
+
+      function showSlide(index) {
+        current = Math.max(0, Math.min(slides.length - 1, index));
+        slides.forEach((slide, i) => slide.classList.toggle("active", i === current));
+        counter.textContent = `${current + 1} / ${slides.length}`;
+      }
+
+      window.agentGuardShowSlide = showSlide;
+
+      document.querySelector("#prev").addEventListener("click", () => showSlide(current - 1));
+      document.querySelector("#next").addEventListener("click", () => showSlide(current + 1));
+
+      window.addEventListener("keydown", (event) => {
+        if (event.key === "ArrowRight" || event.key === " " || event.key === "PageDown") {
+          event.preventDefault();
+          showSlide(current + 1);
+        }
+        if (event.key === "ArrowLeft" || event.key === "PageUp") {
+          event.preventDefault();
+          showSlide(current - 1);
+        }
+        if (event.key === "Home") {
+          showSlide(0);
+        }
+        if (event.key === "End") {
+          showSlide(slides.length - 1);
+        }
+      });
+    </script>
+  </body>
+</html>

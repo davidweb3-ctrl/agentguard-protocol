@@ -1,0 +1,478 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AgentGuard Technical Demo Deck</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #070b18;
+        --panel: #10182a;
+        --text: #f7fbff;
+        --muted: #a9b6c9;
+        --line: #263249;
+        --green: #14f195;
+        --purple: #9945ff;
+        --red: #ff5c68;
+        --yellow: #ffd166;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        overflow: hidden;
+        background: #000;
+        color: var(--text);
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+      }
+
+      .slide {
+        position: absolute;
+        inset: 0;
+        display: none;
+        overflow: hidden;
+        padding: 6.5vh 7vw;
+        background:
+          radial-gradient(circle at 92% 10%, rgba(20, 241, 149, 0.14) 0 18vw, transparent 18.2vw),
+          radial-gradient(circle at -4% 92%, rgba(153, 69, 255, 0.18) 0 16vw, transparent 16.2vw),
+          var(--bg);
+      }
+
+      .slide.active {
+        display: block;
+      }
+
+      .kicker {
+        color: var(--green);
+        font-size: clamp(16px, 1.2vw, 23px);
+        font-weight: 850;
+        text-transform: uppercase;
+      }
+
+      .number {
+        position: absolute;
+        top: 6.5vh;
+        right: 8vw;
+        color: var(--muted);
+        font-size: clamp(22px, 1.8vw, 34px);
+        font-weight: 850;
+      }
+
+      .rule {
+        height: 2px;
+        margin-top: 20px;
+        background: var(--line);
+      }
+
+      h1,
+      h2 {
+        letter-spacing: 0;
+      }
+
+      h1 {
+        max-width: 1220px;
+        margin: 6.5vh 0 0;
+        font-size: clamp(54px, 5.2vw, 96px);
+        line-height: 1;
+      }
+
+      h2 {
+        max-width: 1300px;
+        margin: 5vh 0 0;
+        font-size: clamp(44px, 4.1vw, 76px);
+        line-height: 1.04;
+      }
+
+      p {
+        max-width: 1080px;
+        color: var(--muted);
+        font-size: clamp(22px, 1.8vw, 34px);
+        line-height: 1.28;
+      }
+
+      .columns {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 42px;
+        margin-top: 5vh;
+      }
+
+      .panel {
+        min-height: 530px;
+        border: 2px solid var(--line);
+        border-radius: 22px;
+        padding: 30px;
+        background: var(--panel);
+      }
+
+      .panel h3 {
+        margin: 0 0 24px;
+        color: var(--green);
+        font-size: clamp(28px, 2.1vw, 40px);
+      }
+
+      .panel.purple h3 {
+        color: var(--purple);
+      }
+
+      .flow {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+
+      .flow.vertical {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+
+      .box {
+        min-height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 18px;
+        border: 2px solid var(--green);
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.03);
+        font-size: clamp(18px, 1.3vw, 26px);
+        font-weight: 850;
+        line-height: 1.08;
+        text-align: center;
+      }
+
+      .box.purple {
+        border-color: var(--purple);
+      }
+
+      .box.red {
+        border-color: var(--red);
+      }
+
+      .arrow {
+        color: #8fa0b6;
+        font-size: clamp(28px, 2.5vw, 48px);
+        font-weight: 800;
+        text-align: center;
+      }
+
+      .architecture {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1.1fr 1fr;
+        gap: 18px;
+        margin-top: 6vh;
+        align-items: center;
+      }
+
+      .architecture .box {
+        min-height: 120px;
+      }
+
+      .receipt {
+        grid-column: 3;
+      }
+
+      .api-row {
+        grid-column: 1 / 5;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 18px;
+        margin-top: 28px;
+      }
+
+      .sequence {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 18px;
+        margin-top: 5vh;
+      }
+
+      .step {
+        min-height: 132px;
+        border: 2px solid var(--line);
+        border-radius: 18px;
+        padding: 22px;
+        background: var(--panel);
+        font-size: clamp(18px, 1.3vw, 25px);
+        font-weight: 800;
+        line-height: 1.18;
+      }
+
+      .step strong {
+        display: block;
+        margin-bottom: 10px;
+        color: var(--green);
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 24px;
+        margin-top: 5vh;
+      }
+
+      .card {
+        min-height: 126px;
+        border: 2px solid var(--line);
+        border-radius: 18px;
+        padding: 24px;
+        background: var(--panel);
+        font-size: clamp(20px, 1.45vw, 29px);
+        font-weight: 800;
+        line-height: 1.18;
+      }
+
+      .card strong {
+        display: block;
+        color: var(--green);
+        margin-bottom: 10px;
+      }
+
+      .footer {
+        position: absolute;
+        left: 7vw;
+        bottom: 6vh;
+        color: var(--green);
+        font-size: clamp(20px, 1.5vw, 30px);
+        font-weight: 850;
+      }
+
+      .controls {
+        position: fixed;
+        right: 28px;
+        bottom: 22px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 10px 14px;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        border-radius: 999px;
+        background: rgba(0, 0, 0, 0.42);
+        color: rgba(255, 255, 255, 0.72);
+        font-size: 14px;
+        backdrop-filter: blur(12px);
+      }
+
+      .controls button {
+        width: 38px;
+        height: 32px;
+        border: 0;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.12);
+        color: white;
+        font-size: 18px;
+        cursor: pointer;
+      }
+
+      body.capture .controls {
+        display: none;
+      }
+
+      .before-after h1 {
+        max-width: 1120px;
+        margin-top: 5vh;
+        font-size: clamp(48px, 4.6vw, 84px);
+      }
+
+      .before-after .columns {
+        gap: 34px;
+        margin-top: 3.8vh;
+      }
+
+      .before-after .panel {
+        min-height: 430px;
+        padding: 24px 30px;
+      }
+
+      .before-after .panel h3 {
+        margin-bottom: 18px;
+        font-size: clamp(26px, 1.9vw, 36px);
+      }
+
+      .before-after .flow.vertical {
+        gap: 10px;
+      }
+
+      .before-after .box {
+        min-height: 66px;
+        padding: 14px 18px;
+        font-size: clamp(17px, 1.18vw, 24px);
+      }
+
+      .before-after .arrow {
+        font-size: clamp(22px, 1.9vw, 36px);
+        line-height: 1;
+      }
+
+      .before-after p {
+        margin: 18px 0 0;
+        max-width: none;
+        font-size: clamp(18px, 1.25vw, 25px);
+      }
+    </style>
+  </head>
+  <body>
+    <main aria-label="AgentGuard technical demo deck">
+      <section class="slide active before-after">
+        <div class="kicker">Before / After</div>
+        <div class="number">01</div>
+        <div class="rule"></div>
+        <h1>Where AgentGuard fits in x402-style payments</h1>
+        <div class="columns">
+          <div class="panel">
+            <h3>Without AgentGuard</h3>
+            <div class="flow vertical">
+              <div class="box">Agent receives 402 challenge</div>
+              <div class="arrow">↓</div>
+              <div class="box">Agent pays merchant</div>
+              <div class="arrow">↓</div>
+              <div class="box">Agent retries API with proof</div>
+            </div>
+            <p>Payment can happen, but owner budgets are not enforced by a Solana policy layer before transfer.</p>
+          </div>
+          <div class="panel purple">
+            <h3>With AgentGuard</h3>
+            <div class="flow vertical">
+              <div class="box purple">Agent receives 402 challenge</div>
+              <div class="arrow">↓</div>
+              <div class="box purple">agent_pay through AgentGuard</div>
+              <div class="arrow">↓</div>
+              <div class="box purple">Policy checks before transfer</div>
+              <div class="arrow">↓</div>
+              <div class="box purple">PaymentReceipt PDA unlocks API</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide">
+        <div class="kicker">System Architecture</div>
+        <div class="number">02</div>
+        <div class="rule"></div>
+        <h2>Solana program is the policy enforcement layer</h2>
+        <div class="architecture">
+          <div class="box">Agent Client</div>
+          <div class="arrow">→</div>
+          <div class="box purple">TypeScript SDK</div>
+          <div class="arrow">→</div>
+          <div class="box purple">AgentGuard Anchor Program</div>
+          <div class="arrow">→</div>
+          <div class="box">Policy Vault + Merchant</div>
+          <div class="box receipt">PaymentReceipt PDA</div>
+          <div class="api-row">
+            <div class="box">x402 Demo API</div>
+            <div class="box purple">Verify Receipt</div>
+            <div class="box">Dashboard + Pause Action</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide">
+        <div class="kicker">On-Chain Safety</div>
+        <div class="number">03</div>
+        <div class="rule"></div>
+        <h2>Policy checks happen before SPL token transfer</h2>
+        <div class="grid">
+          <div class="card"><strong>AgentProfile</strong>agent authority, owner, vault, limits, paused state</div>
+          <div class="card"><strong>MerchantPolicy</strong>allowlist status and merchant spending cap</div>
+          <div class="card"><strong>PaymentReceipt</strong>PDA proof derived from agent profile and request hash</div>
+          <div class="card"><strong>Transfer Safety</strong>rejected payments do not move funds</div>
+        </div>
+        <div class="footer">Authority, allowlist, limits, caps, paused status, mint, vault, owner.</div>
+      </section>
+
+      <section class="slide">
+        <div class="kicker">MVP Payment Flow</div>
+        <div class="number">04</div>
+        <div class="rule"></div>
+        <h2>One paid API request, receipt-backed</h2>
+        <div class="sequence">
+          <div class="step"><strong>1</strong>Agent calls paid API</div>
+          <div class="step"><strong>2</strong>API returns 402 challenge</div>
+          <div class="step"><strong>3</strong>Agent submits agent_pay</div>
+          <div class="step"><strong>4</strong>Program checks policy</div>
+          <div class="step"><strong>5</strong>Transfer if allowed</div>
+          <div class="step"><strong>6</strong>Create PaymentReceipt PDA</div>
+          <div class="step"><strong>7</strong>Agent retries with receipt</div>
+          <div class="step"><strong>8</strong>API unlocks paid data</div>
+        </div>
+      </section>
+
+      <section class="slide">
+        <div class="kicker">Receipt Verification</div>
+        <div class="number">05</div>
+        <div class="rule"></div>
+        <h2>Receipt-backed, not client-claimed</h2>
+        <div class="grid">
+          <div class="card"><strong>Fetch Receipt PDA</strong>API reads the expected receipt account</div>
+          <div class="card"><strong>Decode Receipt</strong>receipt is owned by AgentGuard program</div>
+          <div class="card"><strong>Match Challenge</strong>receipt must match the original payment challenge</div>
+          <div class="card"><strong>Unlock Data</strong>paid data returns only after receipt match</div>
+        </div>
+        <div class="footer">The API unlocks data only after the receipt matches.</div>
+      </section>
+
+      <section class="slide">
+        <div class="kicker">Verification</div>
+        <div class="number">06</div>
+        <div class="rule"></div>
+        <h2>Tests cover success and rejection paths</h2>
+        <div class="grid">
+          <div class="card"><strong>Success</strong>valid payment creates receipt and unlocks API</div>
+          <div class="card"><strong>Rejections</strong>unauthorized, unlisted merchant, limits, paused status</div>
+          <div class="card"><strong>Funds safety</strong>rejected payments leave balances unchanged</div>
+          <div class="card"><strong>Human override</strong>pause Action returns transaction bytes</div>
+        </div>
+        <div class="footer">Technical proof: policy-gated Solana payments for agents.</div>
+      </section>
+    </main>
+
+    <nav class="controls" aria-label="Slide controls">
+      <button type="button" id="prev" aria-label="Previous slide">‹</button>
+      <span id="counter">1 / 6</span>
+      <button type="button" id="next" aria-label="Next slide">›</button>
+    </nav>
+
+    <script>
+      const slides = Array.from(document.querySelectorAll(".slide"));
+      const counter = document.querySelector("#counter");
+      const params = new URLSearchParams(window.location.search);
+      const captureMode = params.get("capture") === "1";
+      let current = 0;
+
+      if (captureMode) {
+        document.body.classList.add("capture");
+      }
+
+      function showSlide(index) {
+        current = Math.max(0, Math.min(slides.length - 1, index));
+        slides.forEach((slide, i) => slide.classList.toggle("active", i === current));
+        counter.textContent = `${current + 1} / ${slides.length}`;
+      }
+
+      window.agentGuardShowSlide = showSlide;
+
+      document.querySelector("#prev").addEventListener("click", () => showSlide(current - 1));
+      document.querySelector("#next").addEventListener("click", () => showSlide(current + 1));
+
+      window.addEventListener("keydown", (event) => {
+        if (event.key === "ArrowRight" || event.key === " " || event.key === "PageDown") {
+          event.preventDefault();
+          showSlide(current + 1);
+        }
+        if (event.key === "ArrowLeft" || event.key === "PageUp") {
+          event.preventDefault();
+          showSlide(current - 1);
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -13,3 +13,10 @@ test-ledger
 dist
 build
 coverage
+
+# Final video scratch assets and personal voice samples
+docs/final-video/*.mp3
+docs/final-video/*.m4a
+docs/final-video/receipt-optimized-*.png
+docs/final-video/sync-check-*.png
+docs/final-video/technical-frame-*.png

@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AgentGuard Technical Terminal Clip</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #070b18;
+        --panel: #0d1424;
+        --text: #f7fbff;
+        --muted: #a9b6c9;
+        --line: #263249;
+        --green: #14f195;
+        --purple: #9945ff;
+        --red: #ff5c68;
+        --yellow: #ffd166;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        overflow: hidden;
+        background: #000;
+        color: var(--text);
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+      }
+
+      .stage {
+        width: 100vw;
+        height: 100vh;
+        padding: 3.8vh 6vw;
+        background:
+          radial-gradient(circle at 92% 10%, rgba(20, 241, 149, 0.14) 0 18vw, transparent 18.2vw),
+          radial-gradient(circle at -4% 92%, rgba(153, 69, 255, 0.18) 0 16vw, transparent 16.2vw),
+          var(--bg);
+      }
+
+      .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 2px solid var(--line);
+        padding-bottom: 14px;
+      }
+
+      .kicker {
+        color: var(--green);
+        font-size: clamp(18px, 1.3vw, 26px);
+        font-weight: 850;
+        text-transform: uppercase;
+      }
+
+      .timer {
+        color: var(--muted);
+        font-size: clamp(18px, 1.3vw, 26px);
+        font-weight: 800;
+      }
+
+      h1 {
+        max-width: 1420px;
+        margin: 2.2vh 0 2.2vh;
+        font-size: clamp(38px, 3.35vw, 64px);
+        line-height: 1.02;
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 34px;
+      }
+
+      .terminal {
+        height: 62vh;
+        border: 2px solid var(--line);
+        border-radius: 22px;
+        overflow: hidden;
+        background: #050814;
+        box-shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+      }
+
+      .terminal-bar {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        height: 38px;
+        padding: 0 18px;
+        border-bottom: 1px solid var(--line);
+        background: #101827;
+      }
+
+      .dot {
+        width: 13px;
+        height: 13px;
+        border-radius: 50%;
+      }
+
+      .red {
+        color: var(--red);
+      }
+
+      .dot.red {
+        background: #ff5f57;
+      }
+
+      .dot.yellow {
+        background: #febc2e;
+      }
+
+      .dot.green {
+        background: #28c840;
+      }
+
+      .terminal-title {
+        margin-left: 12px;
+        color: var(--muted);
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      .terminal-body {
+        height: calc(100% - 38px);
+        padding: 18px 22px;
+        overflow: hidden;
+        font-family:
+          "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+        font-size: clamp(13px, 0.92vw, 18px);
+        line-height: 1.34;
+        white-space: pre-wrap;
+      }
+
+      .line {
+        display: none;
+      }
+
+      .line.show {
+        display: block;
+      }
+
+      .cmd,
+      .ok {
+        color: var(--green);
+      }
+
+      .key {
+        color: var(--purple);
+      }
+
+      .warn {
+        color: var(--yellow);
+      }
+
+      .side {
+        display: grid;
+        gap: 10px;
+        align-content: start;
+      }
+
+      .card {
+        border: 2px solid var(--line);
+        border-radius: 18px;
+        background: var(--panel);
+        padding: 14px 18px;
+      }
+
+      .card.active {
+        border-color: var(--green);
+      }
+
+      .card strong {
+        display: block;
+        color: var(--text);
+        font-size: clamp(18px, 1.15vw, 24px);
+        margin-bottom: 5px;
+      }
+
+      .card span {
+        color: var(--muted);
+        font-size: clamp(14px, 0.92vw, 18px);
+        line-height: 1.2;
+      }
+
+      .progress {
+        position: absolute;
+        left: 6vw;
+        right: 6vw;
+        bottom: 3.4vh;
+        height: 8px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.12);
+        overflow: hidden;
+      }
+
+      .bar {
+        height: 100%;
+        width: 0%;
+        background: linear-gradient(90deg, var(--green), var(--purple));
+      }
+    </style>
+  </head>
+  <body>
+    <main class="stage">
+      <div class="header">
+        <div class="kicker">Technical Terminal Walkthrough</div>
+        <div class="timer" id="timer">00:00</div>
+      </div>
+
+      <h1>Two actual runs: valid payment vs over-limit rejection</h1>
+
+      <div class="layout">
+        <section class="terminal">
+          <div class="terminal-bar">
+            <span class="dot red"></span>
+            <span class="dot yellow"></span>
+            <span class="dot green"></span>
+            <span class="terminal-title">agentguard-protocol technical demo</span>
+          </div>
+          <div class="terminal-body">
+            <span class="line" data-step="0"><span class="cmd">$ solana-test-validator --reset --bpf-program 3Af...W838 target/deploy/agentguard_protocol.so</span></span>
+            <span class="line" data-step="0">Program 3AfwmYdCAd9LeRdbiKAJuWBcGVQFtCEStbanoU5TW838 loaded</span>
+            <span class="line" data-step="1"><span class="cmd">$ pnpm --filter @agentguard/x402-demo-api seed</span></span>
+            <span class="line" data-step="1">created agentProfile: <span class="key">8Yx...profile</span></span>
+            <span class="line" data-step="1">created vault: <span class="key">6Dv...vault</span></span>
+            <span class="line" data-step="1">allowlisted merchant: <span class="key">9Mr...merchant</span></span>
+            <span class="line" data-step="2"><span class="ok">RUN 1 — VALID PAYMENT SUCCEEDS</span></span>
+            <span class="line" data-step="2"><span class="cmd">$ pnpm --filter @agentguard/x402-demo-api agent</span></span>
+            <span class="line" data-step="2">GET /paid-data → <span class="warn">402 Payment Required challenge</span></span>
+            <span class="line" data-step="2">{ "challenge": <span class="key">"payment_required"</span>, "requestHash": <span class="key">"0x7b..."</span> }</span>
+            <span class="line" data-step="3">SDK builds <span class="key">agent pay</span> instruction</span>
+            <span class="line" data-step="3">program checks policy before SPL transfer</span>
+            <span class="line" data-step="3">txSignature: <span class="key">5nK...demo</span></span>
+            <span class="line" data-step="3">receiptPda: <span class="key">AgRct...9mvp</span></span>
+            <span class="line" data-step="4">retry /paid-data with decoded receipt proof</span>
+            <span class="line" data-step="4">{ "paidStatus": <span class="ok">200</span>, "data": "paid API response unlocked by AgentGuard receipt" }</span>
+            <span class="line" data-step="5"></span>
+            <span class="line" data-step="5"><span class="warn">RUN 2 — OVER-LIMIT PAYMENT REJECTED</span></span>
+            <span class="line" data-step="5"><span class="cmd">$ pnpm --filter @agentguard/x402-demo-api agent:over-limit</span></span>
+            <span class="line" data-step="5">vaultBefore:    <span class="key">4_900_000</span></span>
+            <span class="line" data-step="5">merchantBefore: <span class="key">100_000</span></span>
+            <span class="line" data-step="6"><span class="red">Program rejected payment before token transfer</span></span>
+            <span class="line" data-step="6">{ "expectedRejection": <span class="ok">true</span>, "balancesUnchanged": <span class="ok">true</span> }</span>
+            <span class="line" data-step="6">vaultAfter:     <span class="key">4_900_000</span>  == vaultBefore</span>
+            <span class="line" data-step="6">merchantAfter:  <span class="key">100_000</span>    == merchantBefore</span>
+            <span class="line" data-step="7"><span class="cmd">$ pnpm --filter @agentguard/x402-demo-api check:pause-action</span></span>
+            <span class="line" data-step="7">Action: Pause AgentGuard Agent</span>
+            <span class="line" data-step="7">transaction byteLength: <span class="ok">212</span></span>
+            <span class="line" data-step="8"><span class="cmd">$ pnpm test:ts</span></span>
+            <span class="line" data-step="8"><span class="ok">16 passing</span></span>
+          </div>
+        </section>
+
+        <aside class="side">
+          <div class="card" data-card="0"><strong>Local program</strong><span>Validator loads the AgentGuard Anchor program.</span></div>
+          <div class="card" data-card="1"><strong>Seeded policy vault</strong><span>Test mint, vault funding, and merchant allowlist are created locally.</span></div>
+          <div class="card" data-card="2"><strong>Run 1: Valid payment</strong><span>402 challenge → agent pay → receiptPda → paidStatus: 200</span></div>
+          <div class="card" data-card="3"><strong>Receipt-backed success</strong><span>API unlocks only after decoded PaymentReceipt matches the challenge.</span></div>
+          <div class="card" data-card="5"><strong>Run 2: Over limit</strong><span>expectedRejection: true before transfer.</span></div>
+          <div class="card" data-card="6"><strong>Balances unchanged</strong><span>vaultBefore equals vaultAfter; merchantBefore equals merchantAfter.</span></div>
+          <div class="card" data-card="7"><strong>Human override</strong><span>Pause Action returns transaction bytes.</span></div>
+          <div class="card" data-card="8"><strong>Verification</strong><span>Tests cover success and policy rejection paths.</span></div>
+        </aside>
+      </div>
+
+      <div class="progress"><div class="bar" id="bar"></div></div>
+    </main>
+
+    <script>
+      const schedule = [
+        { at: 0, step: 0, card: 0 },
+        { at: 1800, step: 1, card: 1 },
+        { at: 4200, step: 2, card: 2 },
+        { at: 12000, step: 3, card: 3 },
+        { at: 18500, step: 4, card: 3 },
+        { at: 23500, step: 5, card: 5 },
+        { at: 34000, step: 6, card: 6 },
+      ];
+      const duration = 43_000;
+      const lines = Array.from(document.querySelectorAll(".line"));
+      const cards = Array.from(document.querySelectorAll(".card"));
+      const terminalBody = document.querySelector(".terminal-body");
+      const bar = document.querySelector("#bar");
+      const timer = document.querySelector("#timer");
+      const params = new URLSearchParams(window.location.search);
+      const captureMode = params.get("capture") === "1";
+      let start = performance.now();
+      let frame = 0;
+
+      function renderAt(elapsedMs) {
+        const elapsed = Math.max(0, Math.min(elapsedMs, duration));
+        const current = schedule.filter((item) => elapsed >= item.at).at(-1) || schedule[0];
+        lines.forEach((line) => line.classList.toggle("show", Number(line.dataset.step) <= current.step));
+        terminalBody.scrollTop = current.step < 2 ? 0 : terminalBody.scrollHeight;
+        cards.forEach((card) => card.classList.toggle("active", Number(card.dataset.card) === current.card));
+        bar.style.width = `${(elapsed / duration) * 100}%`;
+        const seconds = Math.floor(elapsed / 1000);
+        timer.textContent = `00:${String(seconds).padStart(2, "0")}`;
+      }
+
+      function render(now) {
+        const elapsed = Math.min(now - start, duration);
+        renderAt(elapsed);
+        if (elapsed < duration) frame = requestAnimationFrame(render);
+      }
+
+      window.agentGuardRenderAt = renderAt;
+
+      if (captureMode) {
+        renderAt(0);
+      } else {
+        frame = requestAnimationFrame(render);
+      }
+    </script>
+  </body>
+</html>
